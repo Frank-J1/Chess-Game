@@ -1,60 +1,40 @@
-# Chess Game Project – Design Notes
+Chess game project:
 
-## 🎯 Game Definition
+DEFINING THE GAME:
+- This will have every rule that chess has (ie: castle, promotions etc...)
+- The game will be one player vs another player (not like an online version but on the same device)
+- The game will be done through GUI 
+- There should be a history tracker that keeps the moves that are being played
 
-- Full chess rules will be supported (castling, promotions, en passant, etc.)
-- The game will be local multiplayer (two players on one device)
-- A GUI will be used (likely with Pygame)
-- A move history tracker will log all played moves
+Main components:
+- This will be done in a object oriented way;
+	- Each chess peice will inherient from a super class called "peice"
+	- Board will be a 8x8 grid with the tile names (ie e6, f1, h3 etc)
+	- Move will have the move history, check if the move is legal etc...
 
----
+Representation for data:
+- The board can simply be a array with rows and coloums that holds the peice object
+- TO know where each peice is on the board we will just check the position on the board (ie self.position (row, col)
 
-## 🧱 Main Components (Object-Oriented Design)
 
-### Piece (Base Class)
-- Each chess piece inherits from a common superclass `Piece`
-- Responsibilities:
-  - Store color (`white` or `black`)
-  - Store current position (`(row, col)`)
-  - Store type (e.g. "Pawn", "Knight")
-  - Define method to return legal moves
+The Board will:
+- Store an 8x8 grid using a 2D list
+- Initialize with all pieces in the correct positions
+- Handle checking if a square is empty, has an opponent piece, etc.
+- Convert between board indices and chess notation (like e4 ↔ (4, 4))
 
-### Subclasses
-- `Pawn`, `Rook`, `Knight`, `Bishop`, `Queen`, `King` will override the legal move logic
+Each Piece will:
+- Store its color (white/black)
+- Store its current position (e.g., (0, 0) or 'a1')
+- Implement a method to return its legal moves
+- Know its type (Pawn, Rook, etc.) via class or name attribute
 
-### Board
-- 8×8 grid represented by a 2D list
-- Tiles will correspond to names like `e6`, `f1`, `h3`
-- Will initialize with pieces in starting positions
-- Will handle move validation, collision detection, and tile conversion (e.g., `(6, 4)` ↔ `'e2'`)
+The GUI will:
+- Visually render the board and pieces
+- Highlight selected squares and legal moves
+- Allow player to click/select pieces and move them
+- Display game status (check, checkmate, turn, etc.)
 
-### Move
-- Stores move history
-- Validates legality of moves
-- Tracks special moves (castling, promotion, etc.)
-- May support undo
-
----
-
-## 💾 Data Representation
-
-- The board will be a list of lists: `board[row][col]` → `Piece` or `None`
-- Each `Piece` will track its own position (`self.position = (row, col)`)
-- We’ll convert between coordinates and algebraic notation for GUI readability
-
----
-
-## 🖥️ GUI Plan (Pygame)
-
-- Render the chessboard and pieces using Pygame
-- Handle click input for piece selection and moves
-- Highlight legal moves and game status
-- Display current turn, check/checkmate messages, etc.
-
----
-
-## ✅ Project Goals
-- Practice OOP principles
-- Build a playable chess game with full rules
-- Implement a functional GUI
-- (Optional) Add basic AI in the future (minimax)
+The Move system will:
+- Store a list of all moves made
+- Track special moves like castling, promotion, en passant
