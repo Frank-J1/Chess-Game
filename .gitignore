@@ -1,0 +1,21 @@
+# Byte-compiled files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.env/
+venv/
+ENV/
+env/
+
+# VS Code settings
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Pygame-specific (if needed later)
+*.log
+*.tmp
