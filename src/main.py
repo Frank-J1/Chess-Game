@@ -1,10 +1,8 @@
-from Piece import Pawn
+from board import Board
 
-print("Hello from main.py!")  # Step 1: Confirm script runs at all
+def main():
+    board = Board()
+    board.print_board()
 
-from Piece import Pawn
-
-pawn = Pawn("white", (3, 3))
-moves = pawn.get_legal_moves(None)
-
-print("Legal moves for Pawn at (3, 3):", moves)
+if __name__ == "__main__":
+    main()
