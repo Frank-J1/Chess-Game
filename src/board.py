@@ -3,6 +3,7 @@ from pieces.rook import Rook
 from pieces.bishop import Bishop
 from pieces.queen import Queen
 from pieces.king import King
+from pieces.knight import Knight
 
 class Board:
     def __init__(self):
@@ -32,6 +33,11 @@ class Board:
         self.grid[7][4] = King("white", (4, 7))
         self.grid[0][4] = King("black", (4, 0))
 
+        self.grid[7][1] = Knight("white", (1, 7))
+        self.grid[7][6] = Knight("white", (6, 7))
+        self.grid[0][1] = Knight("black", (1, 0))
+        self.grid[0][6] = Knight("black", (6, 0))
+
 
     def print_board(self):
         for row in self.grid:
@@ -49,6 +55,47 @@ class Board:
                     row_str +="Q " if piece.color == "white" else "q "
                 elif piece.__class__.__name__=="King":
                     row_str +="K " if piece.color == "white" else "k "
+                elif piece.__class__.__name__=="Knight":
+                    row_str +="N " if piece.color == "white" else "n "
                 else:
                     row_str += "ERROR "
             print(row_str)
+
+    def parse_coordinates(self, move_str):
+        parts = move_str.split()
+
+        if len(parts) != 2:
+            print("that is an invalid input!")
+            return None
+        start, end = parts
+
+        try:
+            x1 = ord(start[0]) - ord('a')
+            y1 = 8 - int(start[1]) - 1
+
+            x2 = ord(end[0]) - ord('a')
+            y2 = 8 - int(end[1]) - 1
+
+            return (x1, y1), (x2, y2)
+        
+        except:
+            print ("invalid input!")
+            return None
+
+    def move_piece (self, start_pos, end_pos):
+        x1, y1 = start_pos
+        x2, y2 = end_pos
+
+        piece = self.grid[y1][x1]
+
+        legal_moves = piece.get_legal_moves(self)
+
+        if (x2, y2) not in legal_moves:
+            print("Not a valid move!")
+            return False
+        
+        self.grid[y1][x1] = None
+        self.grid[y2][x2] = piece
+        piece.position = (x2, y2)
+
+        return True
