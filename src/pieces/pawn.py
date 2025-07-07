@@ -5,17 +5,19 @@ MAX_Y = 8
 MAX_X = 8
 
 class Pawn(Piece):
+    def symbol(self):
+        return "P" if self.color == "white" else "p"
+    
     def get_legal_moves(self, board):
         moves = []
+        direction = -1 if self.color == "white" else 1
         x, y = self.position
 
-        if y + 1 < MAX_Y:
-            moves.append((x, y + 1))
+        if board.grid[y + direction][x] is None:
+            moves.append((x, y + direction))
 
-        if x - 1 >= 0 and y + 1 < MAX_Y:
-            moves.append((x - 1, y + 1))
-
-        if x + 1 < MAX_X and y + 1 < MAX_Y:
-            moves.append((x + 1, y + 1))
+            start_row = 6 if self.color == "white" else 1
+            if y == start_row and board.grid[y + 2 * direction][x] is None:
+                moves.append((x, y + 2 * direction))
 
         return moves

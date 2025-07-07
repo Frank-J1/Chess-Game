@@ -9,6 +9,7 @@ class Board:
     def __init__(self):
         self.grid = [[None for _ in range(8)] for _ in range(8)]
         self.setup_pieces()
+        self.move_history = []
 
     def setup_pieces(self):
         # Setup pawns
@@ -64,29 +65,36 @@ class Board:
     def parse_coordinates(self, move_str):
         parts = move_str.split()
 
-        if len(parts) != 2:
+        if len(parts) != 2 and move_str != "resign":
             print("that is an invalid input!")
             return None
+        
         start, end = parts
 
         try:
             x1 = ord(start[0]) - ord('a')
-            y1 = 8 - int(start[1]) - 1
+            y1 = 8 - int(start[1])
 
             x2 = ord(end[0]) - ord('a')
-            y2 = 8 - int(end[1]) - 1
+            y2 = 8 - int(end[1])
 
             return (x1, y1), (x2, y2)
         
         except:
-            print ("invalid input!")
             return None
 
-    def move_piece (self, start_pos, end_pos):
+    def move_piece (self, start_pos, end_pos, current_turn):
         x1, y1 = start_pos
         x2, y2 = end_pos
 
+        orig_x1, orig_y1 = x1, y1
+        orig_x2, orig_y2 = x2, y2
+
         piece = self.grid[y1][x1]
+
+        if piece is None:
+            print("No piece at the selected starting position!")
+            return False
 
         legal_moves = piece.get_legal_moves(self)
 
@@ -94,8 +102,20 @@ class Board:
             print("Not a valid move!")
             return False
         
-        self.grid[y1][x1] = None
-        self.grid[y2][x2] = piece
-        piece.position = (x2, y2)
+        if piece.color != current_turn:
+            print("Not your turn!")
+            return False
+        
+        x1 = chr(ord('a') + 4)
+        y1 = 8 - y1
+
+        x2 = chr(ord('a') + 4)
+        y2 = 8 - y2
+        
+        self.move_history.append(f"{current_turn}: {x1}{y1} -> {x2}{y2}")
+
+        self.grid[orig_y1][orig_x1] = None
+        self.grid[orig_y2][orig_x2] = piece
+        piece.position = (orig_x2, orig_y2)
 
         return True
