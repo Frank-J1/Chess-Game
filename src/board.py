@@ -111,10 +111,16 @@ class Board:
 
         x2 = chr(ord('a') + 4)
         y2 = 8 - y2
-        
-        self.move_history.append(f"{current_turn}: {x1}{y1} -> {x2}{y2}")
 
         self.grid[orig_y1][orig_x1] = None
+
+        captured_piece = self.grid[orig_y2][orig_x2]
+
+        if captured_piece is not None:
+             self.move_history.append(f"{current_turn}: {x1}{y1} x {x2}{y2}")
+        else:
+            self.move_history.append(f"{current_turn}: {x1}{y1} -> {x2}{y2}")
+
         self.grid[orig_y2][orig_x2] = piece
         piece.position = (orig_x2, orig_y2)
 
