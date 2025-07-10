@@ -14,16 +14,22 @@ class Queen(Piece):
             new_x, new_y = x + dx, y + dy
 
             while 0 <= new_x < MAX_X and 0 <= new_y < MAX_Y:
-                moves.append((new_x, new_y))
-                new_x += dx
-                new_y += dy
+                if board.grid[new_x][new_y] == None:
+                    moves.append((new_x, new_y))
+                    new_x += dx
+                    new_y += dy
+                else:
+                    break
         
         for dx, dy in [(1, 0), (-1, 0), (0, 1), (0, -1)]:
             new_x, new_y = x + dx, y + dy
 
             while 0 <= new_x < MAX_X and 0 <= new_y < MAX_Y:
-                moves.append((new_x, new_y))
-                new_x += dx
-                new_y += dy
+                if board.grid[new_x][new_y] == None:
+                    moves.append((new_x, new_y))
+                    new_x += dx
+                    new_y += dy
+                else:
+                    break
 
         return moves
